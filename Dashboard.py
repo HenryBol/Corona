@@ -81,11 +81,6 @@ for i in range(len(df)):
     df.Longitude[i] = location.longitude
     print(loc)
 
-# Keep copy of Latitude/Longitude (to avoid running geolocator every time)
-df_lat_long = df[['Latitude', 'Longitude']]
-# df['Latitude'] = df_lat_long['Latitude']
-# df['Longitude'] = df_lat_long['Longitude']
-
 # Adjust manually some misplaced locations (updates from www.latlong.net)
 df.Latitude['Altena'] = 51.814560
 df.Longitude['Altena'] = 4.994680
@@ -109,6 +104,21 @@ df.Latitude['Vlissingen'] = 51.455681
 df.Longitude['Vlissingen'] = 3.576490
 df.Latitude['Westland'] = 51.992490
 df.Longitude['Westland'] = 4.207630
+df.Latitude['Den Helder'] = 52.957380
+df.Longitude['Den Helder'] = 4.758500
+df.Latitude['Texel'] = 53.053921
+df.Longitude['Texel'] = 4.796050
+df.Latitude['Vlieland'] = 53.296860
+df.Longitude['Vlieland'] = 5.074790
+df.Latitude['Terschelling'] = 53.358290
+df.Longitude['Terschelling'] = 5.216040
+df.Latitude['Ameland'] = 53.446240
+df.Longitude['Ameland'] = 5.686010
+
+# Keep copy of Latitude/Longitude (to avoid running geolocator every time)
+df_lat_long = df[['Latitude', 'Longitude']]
+# df['Latitude'] = df_lat_long['Latitude']
+# df['Longitude'] = df_lat_long['Longitude']
 
 # Set index ('city') as seperate feature
 df.reset_index(inplace=True)
