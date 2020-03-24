@@ -53,15 +53,11 @@ df.drop('Hengelo', inplace=True)
 df.loc['Súdwest-Fryslân'] += df.loc['Súdwest Fryslân']
 df.drop('Súdwest-Fryslân', inplace=True)
 
-start_date = dt.date(2020, 3, 4)
-end_date   = dt.date.today()
-dates = [start_date + dt.timedelta(n) for n in range(int((end_date - start_date).days)+1)]
-
 # Set column names to dates
-column_dates = ['2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', 
-                     '2020-03-11','2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', 
-                     '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23']
-df.columns = column_dates
+start_date = dt.date(2020, 3, 4) # March 4th is start of RIVM reporting
+end_date   = dt.date.today()
+dates = [start_date + dt.timedelta(n) for n in range(int((end_date - start_date).days))]
+df.columns = dates
 
 
 # =============================================================================
@@ -81,8 +77,9 @@ for i in range(len(df)):
 
 # Keep copy of Latitude/Longitude (to avoid running geolocator every time)
 df_lat_long = df[['Latitude', 'Longitude']]
-# df['Latitude'] = df_lat_long['Latitude']
-# df['Longitude'] = df_lat_long['Longitude']
+df['Latitude'] = df_lat_long['Latitude']
+df['Longitude'] = df_lat_long['Longitude']
+
 
 # Adjust manually some misplaced locations (updates from www.latlong.net)
 df.Latitude['Altena'] = 51.814560
