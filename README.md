@@ -5,9 +5,12 @@ Investigation in Covid-19:
 
 # Visualisation of spreading in The Netherlands
 
-Code: Dashboard.py
-Data: rivm.nl daily reports (https://www.rivm.nl/en/coronavirus-map-netherlands-per-municipality)
+## Code
+Dashboard.py
 
-Visualisation in Tableau
+## Data
+RIVM daily reports (https://www.rivm.nl/en/coronavirus-map-netherlands-per-municipality)
+
+## Visualisation in Tableau
 Inspiration for visualization: https://livingandcoding.com/blog/animated-gif-tableau
 
