@@ -1,17 +1,16 @@
-# Corona
-Investigation in Covid-19: 
+# Investigation in Covid-19 
 - what to learn from data
 - scenario mapping
 
-# Visualisation of Covid-19 spreading in The Netherlands
+## 1. Visualisation of Covid-19 spreading in The Netherlands
 
-## Code
+### Code
 Dashboard.py
 
-## Data
+### Data
 RIVM daily reports (https://www.rivm.nl/en/coronavirus-map-netherlands-per-municipality)
 
-## Visualisation in Tableau
+### Visualisation in Tableau
 See: 
 Inspiration for visualization: https://livingandcoding.com/blog/animated-gif-tableau
 
