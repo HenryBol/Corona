@@ -53,11 +53,17 @@ df.drop('Hengelo', inplace=True)
 df.loc['Súdwest-Fryslân'] += df.loc['Súdwest Fryslân']
 df.drop('Súdwest-Fryslân', inplace=True)
 
-# Set column names to dates
-start_date = dt.date(2020, 3, 4) # March 4th is start of RIVM reporting
-end_date   = dt.date.today()
-dates = [start_date + dt.timedelta(n) for n in range(int((end_date - start_date).days))]
+
+dates = ['2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', 
+                     '2020-03-11','2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', 
+                     '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23', '2020-03-24']
 df.columns = dates
+
+# TODO Set column names to dates(work in progress - not matching the df_long format)
+# start_date = dt.date(2020, 3, 4) # March 4th is start of RIVM reporting
+# end_date   = dt.date.today()
+# dates = [start_date + dt.timedelta(n) for n in range(int((end_date - start_date).days))]
+# df.columns = dates
 
 
 # =============================================================================
@@ -77,9 +83,8 @@ for i in range(len(df)):
 
 # Keep copy of Latitude/Longitude (to avoid running geolocator every time)
 df_lat_long = df[['Latitude', 'Longitude']]
-df['Latitude'] = df_lat_long['Latitude']
-df['Longitude'] = df_lat_long['Longitude']
-
+# df['Latitude'] = df_lat_long['Latitude']
+# df['Longitude'] = df_lat_long['Longitude']
 
 # Adjust manually some misplaced locations (updates from www.latlong.net)
 df.Latitude['Altena'] = 51.814560
@@ -105,12 +110,13 @@ df.Longitude['Vlissingen'] = 3.576490
 df.Latitude['Westland'] = 51.992490
 df.Longitude['Westland'] = 4.207630
 
+# Set index ('city') as seperate feature
 df.reset_index(inplace=True)
 df = df.rename(columns = {'index': 'city'})
 df.to_csv('output/rivm_data_nl.csv')
 
-# Check confirmed cases (located to a municipality)
-df['2020-03-23'].sum()
+# Check confirmed todays cases (located to a municipality)
+df[df.columns[-3]].sum() # 3rd last column
 
 
 # =============================================================================
@@ -120,11 +126,7 @@ df['2020-03-23'].sum()
 df_long = pd.melt(df, id_vars=['city', 'Latitude', 'Longitude'], 
                      value_vars=['2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', 
                      '2020-03-11','2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', 
-                     '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23'],
-                     var_name='date', value_name='confirmed')
-
-df_long = pd.melt(df, id_vars=['city', 'Latitude', 'Longitude'], 
-                     value_vars=list(columns_dates),
+                     '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23', '2020-03-24'],
                      var_name='date', value_name='confirmed')
 
 # Set correct data types 
