@@ -11,7 +11,7 @@ Dashboard.py
 RIVM daily reports (https://www.rivm.nl/en/coronavirus-map-netherlands-per-municipality)
 
 ### Visualisation in Tableau
-See: https://public.tableau.com/profile/henry4682#!/vizhome/Covid-19spreadinginTheNetherlands/Sheet1
-Inspiration for visualization: https://livingandcoding.com/blog/animated-gif-tableau
+- See: https://public.tableau.com/profile/henry4682#!/vizhome/Covid-19spreadinginTheNetherlands/Sheet1
+- Inspiration for visualization: https://livingandcoding.com/blog/animated-gif-tableau
 
 
