@@ -39,12 +39,20 @@ frame = pd.concat(li, axis=1, join='outer').sort_index()
 # NaN handling
 frame = frame.fillna(0)
 
-# Combine 'double' named cities
-# frame.loc[Beekdaelen,:] += frame[BeekDaelen]
-# Bergen()
-
 # Delete the 'Aantal per 100.000 inwoners'
 frame.drop(columns = ['Aantal per 100.000 inwoners'], inplace=True)
+
+# Combine 'double' named municipalities
+municipalities = frame.index
+frame.loc['Beekdaelen'] += frame.loc['BeekDaelen']
+frame.drop('BeekDaelen', inplace=True)
+frame.loc['Bergen (NH)'] += frame.loc['Bergen (NH.)']
+frame.drop('Bergen (NH.)', inplace=True)
+frame.loc['Hengelo (O)'] += frame.loc['Hengelo']
+frame.drop('Hengelo', inplace=True)
+frame.loc['Súdwest-Fryslân'] += frame.loc['Súdwest Fryslân']
+frame.drop('Súdwest-Fryslân', inplace=True)
+          
 
 # Set column names to dates
 frame.columns = ['2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', 
@@ -71,8 +79,7 @@ for i in range(len(frame)):
 # Keep copy of Latitude/Longitude
 frame_lat_long = frame[['Latitude', 'Longitude']]
 
-# Adjust manually some misplaced locations 
-# Latitude and Longitude corrections from www.latlong.net
+# Adjust manually some misplaced locations (updates from www.latlong.net)
 frame.Latitude['Altena'] = 51.814560
 frame.Longitude['Altena'] = 4.994680
 frame.Latitude['Borne'] = 52.300500
@@ -102,7 +109,6 @@ frame.to_csv('output/rivm_data_nl.csv')
 
 # Check confirmed cases
 frame['2020-03-23'].sum()
-
 
 
 # =============================================================================
