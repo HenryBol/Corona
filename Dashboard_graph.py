@@ -31,9 +31,9 @@ with urllib.request.urlopen("https://pomber.github.io/covid19/timeseries.json") 
 # Choose country
 # data.keys() # list of countries
 # country = 'Korea, South'
-country = 'Netherlands'
+# country = 'Netherlands'
+country = 'Ireland'
 slice_country = True # on or off
-slice = 36 # starting point for The Netherlands
 # Choose log scale or not (to check linear growth in exponential curve)
 log = False # on or off
 
@@ -61,6 +61,7 @@ df_data_country['% death rate'] = (df_data_country['deaths'] / df_data_country['
 
 # Slice from point in time (starting point of breakout)
 if slice_country:
+    slice = np.nonzero(df_data_country['confirmed'].to_numpy())[0][0] # first index with non-zero value
     df_data_country = df_data_country[slice:]
 
 # Log scale
@@ -88,14 +89,14 @@ ax1.set_xticks(df_data_country['date'][::2])
 ax1.set_xticklabels(df_data_country['date'][::2], rotation=45)
 
 # No. of deaths
-# ax2 = ax1.twinx()
-# color = 'tab:red'
-# if log:
-#     ax2.set_ylabel('# deaths (log)', color=color)
-# else:
-#     ax2.set_ylabel('# deaths', color=color)
-# ax2.plot(df_data_country['date'], df_data_country['deaths'], color=color)
-# ax2.tick_params(axis='y', labelcolor=color)
+ax2 = ax1.twinx()
+color = 'tab:red'
+if log:
+    ax2.set_ylabel('# deaths (log)', color=color)
+else:
+    ax2.set_ylabel('# deaths', color=color)
+ax2.plot(df_data_country['date'], df_data_country['deaths'], color=color)
+ax2.tick_params(axis='y', labelcolor=color)
 
 # Death rate
 ax3 = ax1.twinx()
@@ -106,15 +107,15 @@ ax3.tick_params(axis='y', labelcolor=color)
 ax3.spines["right"].set_position(("axes", 1.2))                                                
      
 # Recovered cases
-ax4 = ax1.twinx()
-color = 'tab:green'
-if log:
-    ax4.set_ylabel('# recovered (log)', color=color)
-else:
-    ax4.set_ylabel('# recovered', color=color)
-ax4.plot(df_data_country['date'], df_data_country['recovered'], color=color)
-ax4.tick_params(axis='y', labelcolor=color)
-ax4.spines["right"].set_position(("axes", 1.6))  
+# ax4 = ax1.twinx()
+# color = 'tab:green'
+# if log:
+#     ax4.set_ylabel('# recovered (log)', color=color)
+# else:
+#     ax4.set_ylabel('# recovered', color=color)
+# ax4.plot(df_data_country['date'], df_data_country['recovered'], color=color)
+# ax4.tick_params(axis='y', labelcolor=color)
+# ax4.spines["right"].set_position(("axes", 1.6))  
 
 # Plot total
 fig.tight_layout()  # otherwise the right y-label is slightly clipped
