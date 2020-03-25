@@ -68,9 +68,9 @@ df.columns = dates
 
 
 ## Save data
-filename = 'output/NL_dataframe.pkl'
-with open(filename, 'wb') as file:
-    pickle.dump(df, file)
+f = open('output/NL_dataframe.pkl', 'wb')
+pickle.dump(df, f)
+f.close()
 
 
 # =============================================================================

@@ -3,7 +3,7 @@
 # =============================================================================
 # version 1: March 25th, 2020 Henry Bol
 
-# data input: www.rivm.nl
+# data input: www.rivm.nl (already ptocessed by Dashboard_NL_timelapse.py)
 # data has partly been extracted from the wayback machine and has already been preprocessed in correct formats
 # output: for visualisation in Tableau
 
@@ -12,7 +12,6 @@
 # Import the libraries
 # =============================================================================
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
@@ -20,16 +19,15 @@ import pickle
 # =============================================================================
 # Load the data
 # =============================================================================
-df = pd.DataFrame()
-filename = read('output/NL_dataframe.pkl', 'rb')
-df = pickle.load(file)
-file
+pickle_in = open('output/NL_dataframe.pkl','rb')
+df = pickle.load(pickle_in) 
+
 
 # =============================================================================
 # Process the data
 # =============================================================================
 # Create new df with sum of values
-df_sum = pd.Datadf(df.sum())
+df_sum = pd.DataFrame(df.sum())
 # Rename column name to Confirmed
 df_sum.columns = ['Confirmed']
 
