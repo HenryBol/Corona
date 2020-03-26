@@ -12,6 +12,7 @@
 # Import the libraries
 # =============================================================================
 import pandas as pd
+import numpy as np
 import glob
 import regex as re
 import datetime as dt
@@ -34,7 +35,7 @@ df = pd.concat(li, axis=1, join='outer').sort_index()
 
 
 # =============================================================================
-## Clean up dataframe
+# Clean up dataframe
 # =============================================================================
 # NaN handling
 df = df.fillna(0)
@@ -57,7 +58,7 @@ df.drop('Súdwest-Fryslân', inplace=True)
 dates = ['2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', 
          '2020-03-11','2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', 
          '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23', '2020-03-24', 
-         '2020-03-25']
+         '2020-03-25', '2020-03-26']
 df.columns = dates
 
 # TODO Set column names to dates(work in progress - not matching the df_long format)
@@ -71,6 +72,15 @@ df.columns = dates
 f = open('output/NL_dataframe.pkl', 'wb')
 pickle.dump(df, f)
 f.close()
+
+
+# =============================================================================
+# Delta dataframe for determining delta of growth confirmed cases
+# =============================================================================
+df_delta = df.copy()
+# calculate from last day until second day (reversed order)
+for i in range(df_delta.shape[1]-1,0,-1):
+    df_delta.iloc[:,i] -= df_delta.iloc[:,i-1] 
 
 
 # =============================================================================
@@ -121,6 +131,10 @@ df.Latitude['Terschelling'] = 53.358290
 df.Longitude['Terschelling'] = 5.216040
 df.Latitude['Ameland'] = 53.446240
 df.Longitude['Ameland'] = 5.686010
+df.Latitude['Enkhuizen'] = 52.701280
+df.Longitude['Enkhuizen'] = 5.293730
+df.Latitude['Urk'] = 52.660980
+df.Longitude['Urk'] = 5.600430
 
 # Keep copy of Latitude/Longitude (to avoid running geolocator every time)
 df_lat_long = df[['Latitude', 'Longitude']]
@@ -135,16 +149,26 @@ df.to_csv('output/rivm_data_nl.csv')
 # Check confirmed todays cases (located to a municipality)
 df[df.columns[-3]].sum() # 3rd last column
 
+# Add Latitude and Longitude to df_delta
+df_delta['Latitude'] = df_lat_long['Latitude']
+df_delta['Longitude'] = df_lat_long['Longitude']
+
+# Set index ('city') as seperate feature to df_delta
+df_delta.reset_index(inplace=True)
+df_delta = df_delta.rename(columns = {'index': 'city'})
+df_delta.to_csv('output/rivm_delta_data_nl.csv')
+        
 
 # =============================================================================
 # Export file for input to Tableau visualization
 # =============================================================================
+## dataframe df
 # Create a 'long' datadf with all dates under each other 
 df_long = pd.melt(df, id_vars=['city', 'Latitude', 'Longitude'], 
                      value_vars=['2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', 
                                  '2020-03-11','2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', 
                                  '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23', '2020-03-24', 
-                                 '2020-03-25'],
+                                 '2020-03-25', '2020-03-26'],
                      var_name='date', value_name='confirmed')
 
 # Set correct data types 
@@ -155,3 +179,31 @@ df_long['confirmed'] = df_long['confirmed'].astype('int32')
 # Write output file
 df_long.to_csv('output/rivm_data_nl_{}.csv'.format(dt.date.today()))
 
+
+## dataframe df_delta
+# Create a 'long' datadf with all dates under each other 
+df_delta_long = pd.melt(df_delta, id_vars=['city', 'Latitude', 'Longitude'], 
+                     value_vars=['2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', 
+                                 '2020-03-11','2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', 
+                                 '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23', '2020-03-24', 
+                                 '2020-03-25', '2020-03-26'],
+                     var_name='date', value_name='confirmed')
+
+# Set correct data types 
+df_delta_long['date'] =  pd.to_datetime(df_delta_long['date']).dt.date
+df_delta_long['confirmed'] = df_delta_long['confirmed'].astype('int32')
+# df_delta_long.info()
+
+# Write output file
+df_delta_long.to_csv('output/rivm_delta_data_nl_{}.csv'.format(dt.date.today()))
+
+
+## delta with only three steps: -1, 0, 1
+df_delta_3steps = df_delta_long.copy()
+df_delta_3steps.confirmed = np.where(df_delta_3steps.confirmed > 0, 1, df_delta_3steps.confirmed)
+df_delta_3steps.confirmed = np.where(df_delta_3steps.confirmed < 0, -1, df_delta_3steps.confirmed)
+
+# Write output file
+df_delta_3steps.to_csv('output/rivm_delta_3steps_data_nl_{}.csv'.format(dt.date.today()))
+
+        
