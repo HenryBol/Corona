@@ -31,8 +31,9 @@ with urllib.request.urlopen("https://pomber.github.io/covid19/timeseries.json") 
 # Choose country
 # data.keys() # list of countries
 # country = 'Korea, South'
-# country = 'Netherlands'
-country = 'Ireland'
+country = 'Greece'
+# country = 'Ireland'
+# country = 'Greece'
 slice_country = True # on or off
 # Choose log scale or not (to check linear growth in exponential curve)
 log = False # on or off
@@ -77,6 +78,7 @@ if log:
 # Confirmed cases
 fig, ax1 = plt.subplots()
 color = 'tab:orange'
+ax1.set_title('Covid-19 {}'.format(country), fontsize=10)
 ax1.set_xlabel('date')
 if log:
     ax1.set_ylabel('# confirmed (log)', color=color)
