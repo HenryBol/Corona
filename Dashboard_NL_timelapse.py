@@ -213,7 +213,9 @@ df_delta_3steps_short = df_delta_3steps.copy()
 df_delta_3steps_short.drop(columns=['Latitude','Longitude'], inplace=True)
 df_delta_occurances = df_delta_3steps_short.groupby(["confirmed", "date"]).count().sort_values(["date"], ascending=True).rename(columns={"city" : "sum of occurances"}).unstack(fill_value=0).reset_index()
 df_delta_occurances = df_delta_occurances.T
-df_delta_occurances.set_index()
+df_delta_occurances.reset_index(drop=False)
+df_delta_occurances.columns = ['Negative','Neutral','Positive']
+df_delta_occurances.drop(df_delta_occurances.index[0], inplace=True)
 
 # Write output file
 df_delta_occurances.to_csv('output/rivm_delta_occurances_data_nl_{}.csv'.format(dt.date.today()))
