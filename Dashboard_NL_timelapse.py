@@ -1,7 +1,7 @@
 # =============================================================================
 # Covid-19 : visualisation of Covid-19 spreading in The Netherlands
 # =============================================================================
-# version 1: March 24th, 2020 Henry Bol
+# version 1: Henry Bol
 
 # data input: www.rivm.nl
 # data has partly been extracted from the wayback machine and has already been preprocessed in correct formats
@@ -53,12 +53,13 @@ df.loc['Hengelo (O)'] += df.loc['Hengelo']
 df.drop('Hengelo', inplace=True)
 df.loc['Súdwest-Fryslân'] += df.loc['Súdwest Fryslân']
 df.drop('Súdwest-Fryslân', inplace=True)
-
+df.loc["'s-Gravenhage"] += df.loc['s-Gravenhage']
+df.drop('s-Gravenhage', inplace=True)
 
 dates = ['2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', 
          '2020-03-11','2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', 
          '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23', '2020-03-24', 
-         '2020-03-25', '2020-03-26']
+         '2020-03-25', '2020-03-26', '2020-03-27']
 df.columns = dates
 
 # TODO Set column names to dates(work in progress - not matching the df_long format)
@@ -168,7 +169,7 @@ df_long = pd.melt(df, id_vars=['city', 'Latitude', 'Longitude'],
                      value_vars=['2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', 
                                  '2020-03-11','2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', 
                                  '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23', '2020-03-24', 
-                                 '2020-03-25', '2020-03-26'],
+                                 '2020-03-25', '2020-03-26', '2020-03-27'],
                      var_name='date', value_name='confirmed')
 
 # Set correct data types 
@@ -186,7 +187,7 @@ df_delta_long = pd.melt(df_delta, id_vars=['city', 'Latitude', 'Longitude'],
                      value_vars=['2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', 
                                  '2020-03-11','2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', 
                                  '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23', '2020-03-24', 
-                                 '2020-03-25', '2020-03-26'],
+                                 '2020-03-25', '2020-03-26', '2020-03-27'],
                      var_name='date', value_name='confirmed')
 
 # Set correct data types 
@@ -205,5 +206,16 @@ df_delta_3steps.confirmed = np.where(df_delta_3steps.confirmed < 0, -1, df_delta
 
 # Write output file
 df_delta_3steps.to_csv('output/rivm_delta_3steps_data_nl_{}.csv'.format(dt.date.today()))
+
+
+## count total municipalities -1, 0, 1 per day
+df_delta_3steps_short = df_delta_3steps.copy() 
+df_delta_3steps_short.drop(columns=['Latitude','Longitude'], inplace=True)
+df_delta_occurances = df_delta_3steps_short.groupby(["confirmed", "date"]).count().sort_values(["date"], ascending=True).rename(columns={"city" : "sum of occurances"}).unstack(fill_value=0).reset_index()
+df_delta_occurances = df_delta_occurances.T
+df_delta_occurances.set_index()
+
+# Write output file
+df_delta_occurances.to_csv('output/rivm_delta_occurances_data_nl_{}.csv'.format(dt.date.today()))
 
         
