@@ -3,7 +3,7 @@
 # =============================================================================
 # version 1: March 25th, 2020 Henry Bol
 
-# data input: www.rivm.nl (already ptocessed by Dashboard_NL_timelapse.py)
+# data input: www.rivm.nl (already processed by Dashboard_NL_timelapse.py)
 # data has partly been extracted from the wayback machine and has already been preprocessed in correct formats
 # output: for visualisation in Tableau
 
