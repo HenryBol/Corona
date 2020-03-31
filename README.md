@@ -9,6 +9,7 @@ Dashboard_NL_timelapse.py
 
 ### Data
 RIVM daily reports (https://www.rivm.nl/en/coronavirus-map-netherlands-per-municipality)
+Note: from March 31, RIVM figures are no longer confirmed cases but hospitalized cases
 
 ### Visualisation in Tableau
 - See: https://public.tableau.com/profile/henry4682#!/vizhome/Covid-19spreadinginTheNetherlands/Sheet1
@@ -21,6 +22,7 @@ Dashboard_NL_graph.py
 
 ### Data
 RIVM daily reports (https://www.rivm.nl/en/coronavirus-map-netherlands-per-municipality)
+Note: from March 31, RIVM figures are no longer confirmed cases but hospitalized cases
 
 ## 3. Graph of spreading per country
 
