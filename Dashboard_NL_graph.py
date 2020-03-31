@@ -28,6 +28,12 @@ df = pickle.load(pickle_in)
 # =============================================================================
 # Create new df with sum of values
 df_sum = pd.DataFrame(df.sum())
+
+# Set specific municipality
+# df_municipality = df[df.index=='Oldambt']
+# df_municipality = df[df.index=='Groningen']
+# df_sum = pd.DataFrame(df_municipality.sum())
+
 # Rename column name to Confirmed
 df_sum.columns = ['Confirmed']
 
@@ -66,13 +72,6 @@ color = 'tab:red'
 ax2.set_ylabel('Inflection', color=color)
 ax2.plot(df_sum['Date'], df_sum['Inflection'], color=color)
 ax2.tick_params(axis='y', labelcolor=color)
-
-# ax3 = ax1.twinx()
-# color = 'tab:blue'
-# ax3.set_ylabel('% death rate', color=color)
-# ax3.plot(df_data_country['date'], df_data_country['% death rate'], color=color)
-# ax3.tick_params(axis='y', labelcolor=color)
-# ax3.spines["right"].set_position(("axes", 1.2))         
 
 fig.tight_layout() # otherwise the right y-label is slightly clipped
 plt.show()
