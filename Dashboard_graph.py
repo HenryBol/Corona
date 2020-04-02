@@ -31,7 +31,7 @@ with urllib.request.urlopen("https://pomber.github.io/covid19/timeseries.json") 
 # Choose country
 # data.keys() # list of countries
 # country = 'Korea, South'
-country = 'Greece'
+country = 'Netherlands'
 # country = 'Ireland'
 # country = 'Greece'
 slice_country = True # on or off
@@ -87,8 +87,8 @@ else:
 ax1.plot(df_data_country['date'], df_data_country['confirmed'], color=color)
 ax1.tick_params(axis='y', labelcolor=color)
 ax1.tick_params(axis="x", labelsize=7)
-ax1.set_xticks(df_data_country['date'][::2])
-ax1.set_xticklabels(df_data_country['date'][::2], rotation=45)
+ax1.set_xticks(df_data_country['date'][::4])
+ax1.set_xticklabels(df_data_country['date'][::4], rotation=45)
 
 # No. of deaths
 ax2 = ax1.twinx()
