@@ -87,8 +87,8 @@ else:
 ax1.plot(df_data_country['date'], df_data_country['confirmed'], color=color)
 ax1.tick_params(axis='y', labelcolor=color)
 ax1.tick_params(axis="x", labelsize=7)
-ax1.set_xticks(df_data_country['date'][::4])
-ax1.set_xticklabels(df_data_country['date'][::4], rotation=45)
+ax1.set_xticks(df_data_country['date'][::10])
+ax1.set_xticklabels(df_data_country['date'][::10], rotation=45)
 
 # No. of deaths
 ax2 = ax1.twinx()
