@@ -31,12 +31,14 @@ with urllib.request.urlopen("https://pomber.github.io/covid19/timeseries.json") 
 # Choose country
 # data.keys() # list of countries
 # country = 'Korea, South'
-country = 'Netherlands'
+# country = 'Netherlands'
+# country = 'China'
+# country = 'US'
 # country = 'Ireland'
-# country = 'Greece'
+country = 'Greece'
 slice_country = True # on or off
 # Choose log scale or not (to check linear growth in exponential curve)
-log = False # on or off
+log = False # true or false
 
 
 ## Create data file
@@ -87,8 +89,8 @@ else:
 ax1.plot(df_data_country['date'], df_data_country['confirmed'], color=color)
 ax1.tick_params(axis='y', labelcolor=color)
 ax1.tick_params(axis="x", labelsize=7)
-ax1.set_xticks(df_data_country['date'][::10])
-ax1.set_xticklabels(df_data_country['date'][::10], rotation=45)
+ax1.set_xticks(df_data_country['date'][::5])
+ax1.set_xticklabels(df_data_country['date'][::5], rotation=45)
 
 # No. of deaths
 ax2 = ax1.twinx()
@@ -99,6 +101,8 @@ else:
     ax2.set_ylabel('# deaths', color=color)
 ax2.plot(df_data_country['date'], df_data_country['deaths'], color=color)
 ax2.tick_params(axis='y', labelcolor=color)
+ax2.set_xticks(df_data_country['date'][::5])
+ax2.set_xticklabels(df_data_country['date'][::5], rotation=45)
 
 # Death rate
 ax3 = ax1.twinx()
@@ -107,7 +111,9 @@ ax3.set_ylabel('% death rate', color=color)
 ax3.plot(df_data_country['date'], df_data_country['% death rate'], color=color)
 ax3.tick_params(axis='y', labelcolor=color)
 ax3.spines["right"].set_position(("axes", 1.2))                                                
-     
+ax3.set_xticks(df_data_country['date'][::5])
+ax3.set_xticklabels(df_data_country['date'][::5], rotation=45)     
+
 # Recovered cases
 # ax4 = ax1.twinx()
 # color = 'tab:green'
