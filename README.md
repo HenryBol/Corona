@@ -22,7 +22,8 @@ Dashboard_NL_graph.py
 
 ### Data
 RIVM daily reports (https://www.rivm.nl/en/coronavirus-map-netherlands-per-municipality)  
-Note: from March 31, RIVM figures are no longer confirmed cases but hospitalized cases (per 100.000 inhabitants)
+Note: from March 31st, 2020, RIVM figures are no longer confirmed cases but hospitalized cases (per 100.000 inhabitants)
+Note: from June 30th, 2020, RIVM reports no longer daily but weekly only
 
 ## 3. Graph of spreading per country
 
